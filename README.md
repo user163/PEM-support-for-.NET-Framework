@@ -8,6 +8,7 @@ Tested with .NET Framework 4.8 and Portable.BouncyCastle 1.9.0
 
 Sample output:
 
+```none
 -----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCBm0kJAWHf4Z+2
 I+8pIKPGhxGvfHsjbSZbnScXH1icZpZofSrMnFPz/S/N9JEKkhzNE0Q3Ro7MpesK
@@ -88,3 +89,4 @@ O5tChayIPViVpardAoNnL3DCQG+ramePbp8Rqp5qFTmP2QShnVhgDGbXubSeNTa4uJw8lFAeBbRj2r4/
 The quick brown fox jumps over the lazy dog
 dTHi5K5jPceuXZqQqXolF+p484WnaACDSB8dpeueZsP/iqVPle9/bQv3UJ/7mpyvmGHBsDpv+72J+hz4oehdj2xMLn1L02uugPkXoNim7+36sNMM6QjgVVXuhSWEPIceXY5aHPIB42TSZf25ulzjdgvx0pGYn1Ve4kUvGdA7EIunssWDZK/HG4YKb54YWGjW8KHrP28VMeGxtAF04kfwgTI684FZUl00uwfl6v9KE16rftI7cqSYBmIPe2ztxyOyBj3YdNB+/7tmSouHqf4UUtiMLe8EzKYrP7u5FwWtX2L42RyohTthGrISWJhOw+MuJG9lOWKGEuYllI9R8pwFFQ==
 The quick brown fox jumps over the lazy dog
+```
