@@ -68,6 +68,7 @@ class Program
         bool verified2 = RsaVerifyWithPkcs1v15(message, signature2, publicRsaKeyReloaded2, digest); 
         Console.WriteLine(Convert.ToBase64String(signature2));
         Console.WriteLine(verified2);
+        Console.WriteLine();
 
         // Test 6: Extrac public Rsa key from private Rsa key
         RsaKeyParameters derivedPublicRsaKey = ExtractPublicRsaKeyFromPrivateRsaKey(privateRsaKey);
