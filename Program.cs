@@ -17,8 +17,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        ISigner sig = SignerUtilities.GetSigner("NoneWithRSA");
-
         // Test 1: Create key pair
         (RsaKeyParameters privateRsaKey, RsaKeyParameters publicRsaKey) = CreateRsaKeyPair();
 
