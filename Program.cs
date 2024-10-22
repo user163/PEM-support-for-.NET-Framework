@@ -138,6 +138,12 @@ class Program
         return (RsaKeyParameters)prPublic.ReadObject();
     }
 
+    public static RsaKeyParameters ExtractPublicRsaKeyFromPrivateRsaKey(RsaKeyParameters privateRsaKey)
+    {
+        RsaPrivateCrtKeyParameters privateRsaCrtKey = (RsaPrivateCrtKeyParameters)privateRsaKey;
+        return new RsaKeyParameters(false, privateRsaKey.Modulus, privateRsaCrtKey.PublicExponent);
+    }
+    
     public static byte[] RsaCryptWithOAEP(bool IsEncrypt, byte[] data, RsaKeyParameters key, IDigest oaepDigest, IDigest mgf1Digest, byte[] label = null)
     {
         OaepEncoding oaepEncoding = new OaepEncoding(new RsaEngine(), oaepDigest, mgf1Digest, label);
@@ -190,11 +196,5 @@ class Program
     {
         ISigner verifier = RsaSignVerifyWithPkcs1v15(false, msg, key, digest);
         return verifier.VerifySignature(signature);
-    }
-
-    public static RsaKeyParameters ExtractPublicRsaKeyFromPrivateRsaKey(RsaKeyParameters privateRsaKey)
-    {
-        RsaPrivateCrtKeyParameters privateRsaCrtKey = (RsaPrivateCrtKeyParameters)privateRsaKey;
-        return new RsaKeyParameters(false, privateRsaKey.Modulus, privateRsaCrtKey.PublicExponent);
     }
 }
