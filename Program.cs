@@ -35,8 +35,12 @@ class Program
         RsaKeyParameters privateRsaKeyReloaded2 = ImportPrivateFromPkcs1Pem(privatePkcs1Pem);
         RsaKeyParameters publicRsaKeyReloaded1 = (RsaKeyParameters)ImportPublicFromSpkiPem(publicSpkiPem);
         RsaKeyParameters publicRsaKeyReloaded2 = ImportPublicFromPkcs1Pem(publicPkcs1Pem);
+        
+        // Test 4: Extract public Rsa key from private Rsa key
+        RsaKeyParameters derivedPublicRsaKey = ExtractPublicRsaKeyFromPrivateRsaKey(privateRsaKey);
+        Console.WriteLine(ExportPublicAsSpkiPem(derivedPublicRsaKey));
 
-        // Test 4a: Encrypt/Decrypt with OAEP
+        // Test 5a: Encrypt/Decrypt with OAEP
         byte[] plaintext = Encoding.UTF8.GetBytes("The quick brown fox jumps over the lazy dog");
         Sha256Digest digest = new Sha256Digest();
         
@@ -46,14 +50,14 @@ class Program
         Console.WriteLine(Encoding.UTF8.GetString(decrypted1));
         Console.WriteLine();
         
-        // Test 4b: Encrypt/Decrypt with PKCS#1 v1.5
+        // Test 5b: Encrypt/Decrypt with PKCS#1 v1.5
         byte[] ciphertext2 = RsaCryptWithPkcs1v15(true, plaintext, publicRsaKeyReloaded2);
         byte[] decrypted2 = RsaCryptWithPkcs1v15(false, ciphertext2, privateRsaKeyReloaded2);
         Console.WriteLine(Convert.ToBase64String(ciphertext2));
         Console.WriteLine(Encoding.UTF8.GetString(decrypted2));
         Console.WriteLine();
 
-        // Test 5a: Sign/Verify with PSS
+        // Test 6a: Sign/Verify with PSS
         byte[] message = Encoding.UTF8.GetBytes("The quick brown fox jumps over the lazy dog");
         digest = new Sha256Digest();
 
@@ -63,16 +67,12 @@ class Program
         Console.WriteLine(verified1);
         Console.WriteLine();
 
-        // Test 5b: Sign/Verify with Pkcs#1 v1.5
+        // Test 6b: Sign/Verify with Pkcs#1 v1.5
         byte[] signature2 = RsaSignWithPkcs1v15(message, privateRsaKeyReloaded2, digest);
         bool verified2 = RsaVerifyWithPkcs1v15(message, signature2, publicRsaKeyReloaded2, digest); 
         Console.WriteLine(Convert.ToBase64String(signature2));
         Console.WriteLine(verified2);
         Console.WriteLine();
-
-        // Test 6: Extrac public Rsa key from private Rsa key
-        RsaKeyParameters derivedPublicRsaKey = ExtractPublicRsaKeyFromPrivateRsaKey(privateRsaKey);
-        Console.WriteLine(ExportPublicAsSpkiPem(derivedPublicRsaKey));
     }
 
     public static (RsaKeyParameters privateRsa, RsaKeyParameters publicRsa) CreateRsaKeyPair(int size = 2048)
