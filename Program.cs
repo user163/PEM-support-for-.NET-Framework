@@ -42,8 +42,8 @@ class Program
         byte[] plaintext = Encoding.UTF8.GetBytes("The quick brown fox jumps over the lazy dog");
         Sha256Digest digest = new Sha256Digest();
         
-        byte[] ciphertext1 = RsaCryptWithOAEP(true, plaintext, publicRsaKeyReloaded1, digest, digest, null); 
-        byte[] decrypted1 = RsaCryptWithOAEP(false, ciphertext1, privateRsaKeyReloaded1, digest, digest, null); 
+        byte[] ciphertext1 = RsaCryptWithOAEP(true, plaintext, publicRsaKeyReloaded1, digest, digest); 
+        byte[] decrypted1 = RsaCryptWithOAEP(false, ciphertext1, privateRsaKeyReloaded1, digest, digest); 
         Console.WriteLine(Convert.ToBase64String(ciphertext1));
         Console.WriteLine(Encoding.UTF8.GetString(decrypted1));
         Console.WriteLine();
@@ -148,7 +148,7 @@ class Program
         return oaepEncoding.ProcessBlock(data, 0, data.Length);
     }
 
-    private static ISigner RsaSignVerifyWithPSS(bool IsSign, byte[] msg, RsaKeyParameters key, IDigest pssDigest, IDigest mgf1Digest, int saltLen = -1, byte trailerField = 0xbc)
+    private static ISigner RsaSignVerifyWithPSS(bool IsSign, byte[] msg, RsaKeyParameters key, IDigest pssDigest, IDigest mgf1Digest, int saltLen, byte trailerField)
     {
         ISigner signerVerifier = new PssSigner(new RsaEngine(), pssDigest, mgf1Digest, saltLen == -1 ? pssDigest.GetDigestSize() : saltLen, trailerField);
         signerVerifier.Init(IsSign, key);
