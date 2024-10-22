@@ -68,6 +68,10 @@ class Program
         bool verified2 = RsaVerifyWithPkcs1v15(message, signature2, publicRsaKeyReloaded2, digest); 
         Console.WriteLine(Convert.ToBase64String(signature2));
         Console.WriteLine(verified2);
+
+        // Test 6: Extrac public Rsa key from private Rsa key
+        RsaKeyParameters derivedPublicRsaKey = ExtractPublicRsaKeyFromPrivateRsaKey(privateRsaKey);
+        Console.WriteLine(ExportPublicAsSpkiPem(derivedPublicRsaKey));
     }
 
     public static (RsaKeyParameters privateRsa, RsaKeyParameters publicRsa) CreateRsaKeyPair(int size = 2048)
@@ -126,6 +130,7 @@ class Program
         OpenSSL.PemReader pemReader = new OpenSSL.PemReader(new StringReader(publicSpkiPem));
         return (AsymmetricKeyParameter)pemReader.ReadObject();
     }
+    
     public static RsaKeyParameters ImportPublicFromPkcs1Pem(string publicPkcs1Pem)
     {
         OpenSSL.PemReader prPublic = new OpenSSL.PemReader(new StringReader(publicPkcs1Pem));
@@ -184,5 +189,11 @@ class Program
     {
         ISigner verifier = RsaSignVerifyWithPkcs1v15(false, msg, key, digest);
         return verifier.VerifySignature(signature);
+    }
+
+    public static RsaKeyParameters ExtractPublicRsaKeyFromPrivateRsaKey(RsaKeyParameters privateRsaKey)
+    {
+        RsaPrivateCrtKeyParameters privateRsaCrtKey = (RsaPrivateCrtKeyParameters)privateRsaKey;
+        return new RsaKeyParameters(false, privateRsaKey.Modulus, privateRsaCrtKey.PublicExponent);
     }
 }
