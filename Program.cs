@@ -59,17 +59,17 @@ class Program
         byte[] message = Encoding.UTF8.GetBytes("The quick brown fox jumps over the lazy dog");
         digest = new Sha256Digest();
 
-        byte[] signature = RsaSignWithPSS(message, privateRsaKeyReloaded1, digest, digest, 32, 0xbc);
-        bool verified = RsaVerifyWithPSS(message, signature, publicRsaKeyReloaded1, digest, digest); 
-        Console.WriteLine(Convert.ToBase64String(signature));
-        Console.WriteLine(verified);
+        byte[] signature1 = RsaSignWithPSS(message, privateRsaKeyReloaded1, digest, digest, 32, 0xbc);
+        bool verified1 = RsaVerifyWithPSS(message, signature1, publicRsaKeyReloaded1, digest, digest); 
+        Console.WriteLine(Convert.ToBase64String(signature1));
+        Console.WriteLine(verified1);
         Console.WriteLine();
 
         // Test 5b: Sign/Verify with Pkcs#1 v1.5
-        signature = RsaSignWithPkcs1v15(message, privateRsaKeyReloaded1, digest);
-        verified = RsaVerifyWithPkcs1v15(message, signature, publicRsaKeyReloaded1, digest); 
-        Console.WriteLine(Convert.ToBase64String(signature));
-        Console.WriteLine(verified);
+        byte[] signature2 = RsaSignWithPkcs1v15(message, privateRsaKeyReloaded2, digest);
+        bool verified2 = RsaVerifyWithPkcs1v15(message, signature2, publicRsaKeyReloaded2, digest); 
+        Console.WriteLine(Convert.ToBase64String(signature2));
+        Console.WriteLine(verified2);
     }
 
     public static (RsaKeyParameters privateRsa, RsaKeyParameters publicRsa) CreateRsaKeyPair(int size = 2048)
