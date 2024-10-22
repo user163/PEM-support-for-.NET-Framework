@@ -148,26 +148,25 @@ class Program
         return oaepEncoding.ProcessBlock(data, 0, data.Length);
     }
 
-    private static ISigner RsaSignVerifyWithPSS(bool IsSign, byte[] msg, RsaKeyParameters key, IDigest oaepDigest, IDigest mgf1Digest, int saltLen = -1, byte trailerField = 0xbc)
+    private static ISigner RsaSignVerifyWithPSS(bool IsSign, byte[] msg, RsaKeyParameters key, IDigest pssDigest, IDigest mgf1Digest, int saltLen = -1, byte trailerField = 0xbc)
     {
-        ISigner signerVerifier = new PssSigner(new RsaEngine(), oaepDigest, mgf1Digest, saltLen == -1 ? oaepDigest.GetDigestSize() : saltLen, trailerField);
+        ISigner signerVerifier = new PssSigner(new RsaEngine(), pssDigest, mgf1Digest, saltLen == -1 ? pssDigest.GetDigestSize() : saltLen, trailerField);
         signerVerifier.Init(IsSign, key);
         signerVerifier.BlockUpdate(msg, 0, msg.Length);
         return signerVerifier;
     }
 
-    public static byte[] RsaSignWithPSS(byte[] msg, RsaKeyParameters key, IDigest oaepDigest, IDigest mgf1Digest, int saltLen = -1, byte trailerField = 0xbc)
+    public static byte[] RsaSignWithPSS(byte[] msg, RsaKeyParameters key, IDigest pssDigest, IDigest mgf1Digest, int saltLen = -1, byte trailerField = 0xbc)
     {
-        ISigner signer = RsaSignVerifyWithPSS(true, msg, key, oaepDigest, mgf1Digest, saltLen, trailerField);
+        ISigner signer = RsaSignVerifyWithPSS(true, msg, key, pssDigest, mgf1Digest, saltLen, trailerField);
         return signer.GenerateSignature();
     }
 
-    public static bool RsaVerifyWithPSS(byte[] msg, byte[] signature, RsaKeyParameters key, IDigest oaepDigest, IDigest mgf1Digest, int saltLen = -1, byte trailerField = 0xbc)
+    public static bool RsaVerifyWithPSS(byte[] msg, byte[] signature, RsaKeyParameters key, IDigest pssDigest, IDigest mgf1Digest, int saltLen = -1, byte trailerField = 0xbc)
     {
-        ISigner verifier = RsaSignVerifyWithPSS(false, msg, key, oaepDigest, mgf1Digest, saltLen, trailerField);
+        ISigner verifier = RsaSignVerifyWithPSS(false, msg, key, pssDigest, mgf1Digest, saltLen, trailerField);
         return verifier.VerifySignature(signature);
     }
-
     
     private static ISigner RsaSignVerifyWithPkcs1v15(bool IsSign, byte[] msg, RsaKeyParameters key, IDigest digest)
     {
